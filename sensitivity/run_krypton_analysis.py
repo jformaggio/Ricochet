@@ -1,38 +1,50 @@
+import json
+import sys
 import pystanLoad as pyL
 
-casheDirectory = './cache'
+theConfigFile = sys.argv[1]
+print "Using configuration file :",theConfigFile
 
-# Below is an example of running the analysis on experimental data.
+# Load in configuration file
 
-runType = "Data"
+json_file = open(theConfigFile).read()
+json_data = json.loads(json_file)
+config_file = pyL.readLabel(json_data,'stan','./run.json')
 
-if runType=="Data":
-    theModel = './krypton_analysis.stan'
-    theDataFiles = {'header':'./data/krypton_run.header.data', 'data':'./data/krypton_run.data'}
-    theSample= "./results/test_analysis.out"
-    thePlots = ['TotalField','TrappingField','MainField','frequency','KE','stheta']
-else :
-    theModel = './krypton_generator.stan'
-    theDataFiles = {'header':'./data/krypton_run.header.data', 'mc':'./data/krypton_monte_carlo.data'}
-    theSample= "./results/test_generator.out"
-    thePlots = ['TotalField','TrappingField','MainField','KE','frequency','freq_data','dfdt']
+# Set up the stan model and cache directory
 
-# Run fitter
+theModel = pyL.readLabel(config_file, 'model')
+casheDirectory = pyL.readLabel(theModel, 'cache', './cache')
+theModelFile =  pyL.readLabel(theModel,'file')
+     
+# Set up the input, output and plotting configurations
+theDataFiles =  pyL.readLabel(config_file, 'data')
+theSample = pyL.readLabel(config_file,'sample')
+thePlots =  pyL.readLabel(config_file,'plot')
 
+
+# Set up running conditions
+theRunConditions =  pyL.readLabel(config_file,'run')
+theAlgorithm =  pyL.readLabel(theRunConditions,'algorithim','NUTS')
+nIter =   pyL.readLabel(theRunConditions,'iter',2000)
+nChain =  pyL.readLabel(theRunConditions,'chain',4)
+
+# Load in the data
 theData = pyL.stan_data_files(theDataFiles)
 
-fit = pyL.stan_cache(model_code= theModel, 
+# Execute the fit
+theFit = pyL.stan_cache(model_code= theModelFile, 
 		 cashe_dir= casheDirectory,
 		 data=theData,
-		 algorithm = 'NUTS', 
-		 iter=2500, chains=16,
+		 algorithm = theAlgorithm, 
+		 iter=nIter, chains=nChain,
 		 sample_file=theSample)
 
 # Print results and make plots
 
-print(fit)
+print(theFit)
 
 for key in thePlots:
-    fit.plot(key)
+    theFit.plot(key['variable'])
 
 pyL.plt.show()
