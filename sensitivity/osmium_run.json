@@ -1,0 +1,39 @@
+{
+  "stan": {
+
+  	 "name": "Osmium",
+
+	 "model":	{
+	 	"file": "./OsmSTAN.stan",
+		"cache": "./cache"
+		},
+
+	 "data": {
+	 	"type": "mc",
+		"files": [
+		    {
+			"name": "./sensitivity/osmium_data.data", 
+			"format":"R"
+		    },
+		 ]
+	},
+
+	"run": {
+	       "algorithim": "NUTS",
+	       "iter": 2500,
+	       "chain": 8},
+
+	"plot": [
+		{"variable": "TotalField"},
+		{"variable": "TrappingField"},
+		{"variable": "MainField"},
+		{"variable": "KE"},
+		{"variable": "frequency"},
+		{"variable": "stheta"}
+		],
+
+	"sample": "./results/test_generator.out"
+
+   }
+
+}

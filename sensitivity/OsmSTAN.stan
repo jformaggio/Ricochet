@@ -101,12 +101,12 @@ transformed parameters {
 
 data {
 
-     real Q;
-     real threshhold;
-     real m_osmium_target;
-     real min_r;
-     real max_r;
-     real detector_mass;
+     real Q;								// in eV	
+     real threshhold;							// in eV
+     real m_osmium_target;						// in eV
+     real min_r;							// in cm
+     real max_r;							// in cm
+     real detector_mass;						// in g
 
 }
 
