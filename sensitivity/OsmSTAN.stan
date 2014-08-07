@@ -1,6 +1,5 @@
-import pystan
 
-functions {
+functions{
 
 // Set up constants 
 
@@ -18,7 +17,7 @@ functions {
 // Target
 
    real target(real detector_mass) {
-   	return n_avogadro * detector_mass / a();
+   	return n_avogadro() * detector_mass / a();
    }
 
 

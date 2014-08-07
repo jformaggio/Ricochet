@@ -12,9 +12,9 @@
 	 	"type": "mc",
 		"files": [
 		    {
-			"name": "./sensitivity/osmium_data.data", 
+			"name": "./osmium_data.data", 
 			"format":"R"
-		    },
+		    }
 		 ]
 	},
 
