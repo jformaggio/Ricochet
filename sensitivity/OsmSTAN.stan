@@ -34,9 +34,6 @@ functions{
 	real fraction;
 	prefactor <- square(g_f()) * m_osmium_target * square(q_w()) / (4 * pi());
 	fraction <- 1 - m_osmium_target * kinetic_energy / (2 * square(neutrino_energy));
-	if (neutrino_energy < min_neutrino_energy(kinetic_energy, m_osmium_target)) {
-	   return 0;
-	}
 	return prefactor * fraction;
    }
 
@@ -69,8 +66,10 @@ functions{
 
 // Signal
 
-   real signal(real kinetic_energy, real radius, real neutrino_energy, real detector_mass, real Q, real sin2theta_s, real delta_m, real m_osmium_target) {
-	return target(detector_mass) * flux_constant() * pow(radius, -2) * differential_cross_section(neutrino_energy, kinetic_energy, m_osmium_target) * beta_nu_spectrum(neutrino_energy, Q) * oscillations(sin2theta_s, delta_m, neutrino_energy, radius);
+     real signal(real detector_mass, real radius, real neutrino_energy, real Q, real sin2theta_s, real delta_m, real kinetic_energy, real m_osmium_target) {
+     	real flux_radius;
+	flux_radius <- pow(radius,-2);
+	return target(detector_mass) * flux_constant() * flux_radius * beta_nu_spectrum(neutrino_energy, Q) * oscillations(sin2theta_s, delta_m, neutrino_energy, radius) * differential_cross_section(neutrino_energy, kinetic_energy, m_osmium_target);
    }
 
 // Maximum Kinetic Energy
@@ -84,7 +83,7 @@ functions{
 data {
 
      real Q;								// in eV	
-     real threshhold;							// in eV
+     real threshold;							// in eV
      real m_osmium_target;						// in eV
      real min_r;							// in cm
      real max_r;							// in cm
@@ -96,8 +95,8 @@ parameters {
 
 	real <upper = 1> sin2theta_s;
 	real <lower = 0> delta_m;
-	real <lower = 0, upper = Q> neutrino_energy;
-	real <lower = 10, upper = tmax(neutrino_energy, m_osmium_target)> kinetic_energy;
+	real <lower = min_neutrino_energy(threshold, m_osmium_target), upper = Q> neutrino_energy;
+	real <lower = threshold, upper = tmax(Q, m_osmium_target)> kinetic_energy;
 	real <lower = min_r, upper = max_r> radius;   
 
 }
@@ -114,7 +113,10 @@ transformed parameters {
 model {
 
       real signal_strength;
-      signal_strength <- signal(kinetic_energy, radius, neutrino_energy, detector_mass, Q, sin2theta_s, delta_m, m_osmium_target);
+      signal_strength <- signal(detector_mass, radius, neutrino_energy, Q, sin2theta_s, delta_m, kinetic_energy, m_osmium_target);
       increment_log_prob(log(signal_strength));
+
+      neutrino_energy ~ uniform(min_neutrino_energy(threshold, m_osmium_target), Q);
+      kinetic_energy ~ uniform(threshold, tmax(neutrino_energy, m_osmium_target));
 
 }
