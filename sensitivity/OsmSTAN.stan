@@ -70,7 +70,7 @@ functions{
 // Signal
 
    real signal(real kinetic_energy, real radius, real neutrino_energy, real A, real detector_mass, real Q, real sin2theta_s, real delta_m, real m_osmium_target) {
-	return target(A, detector_mass) * flux_constant * pow(radius, -2) * differential_cross_section(neutrino_energy, kinetic_energy, m_osmium_target) * beta_nu_spectrum(neutrino_energy, Q) * oscillations(sin2theta_s, delta_m, neutrino_energy, radius);
+	return target(A, detector_mass) * flux_constant() * pow(radius, -2) * differential_cross_section(neutrino_energy, kinetic_energy, m_osmium_target) * beta_nu_spectrum(neutrino_energy, Q) * oscillations(sin2theta_s, delta_m, neutrino_energy, radius);
    }
 
 // Maximum Kinetic Energy
