@@ -32,7 +32,7 @@ functions{
    real differential_cross_section(real neutrino_energy, real kinetic_energy, real m_osmium_target) {
    	real prefactor;
 	real fraction;
-	prefactor <- square(g_f()) * m_osmium_target * square(q_w) / (4 * pi());
+	prefactor <- square(g_f()) * m_osmium_target * square(q_w()) / (4 * pi());
 	fraction <- 1 - m_osmium_target * kinetic_energy / (2 * square(neutrino_energy));
 	if (neutrino_energy < min_neutrino_energy(kinetic_energy)) {
 	   return 0;
