@@ -34,7 +34,7 @@ functions{
 	real fraction;
 	prefactor <- square(g_f()) * m_osmium_target * square(q_w()) / (4 * pi());
 	fraction <- 1 - m_osmium_target * kinetic_energy / (2 * square(neutrino_energy));
-	if (neutrino_energy < min_neutrino_energy(kinetic_energy)) {
+	if (neutrino_energy < min_neutrino_energy(kinetic_energy, m_osmium_target)) {
 	   return 0;
 	}
 	return prefactor * fraction;
