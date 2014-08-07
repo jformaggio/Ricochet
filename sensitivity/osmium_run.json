@@ -24,12 +24,7 @@
 	       "chain": 8},
 
 	"plot": [
-		{"variable": "TotalField"},
-		{"variable": "TrappingField"},
-		{"variable": "MainField"},
-		{"variable": "KE"},
-		{"variable": "frequency"},
-		{"variable": "stheta"}
+		{"variable": "sin_2"}
 		],
 
 	"sample": "./results/test_generator.out"
