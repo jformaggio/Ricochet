@@ -15,7 +15,13 @@
 			"name": "./osmium_data.data", 
 			"format":"R"
 		    }
-		 ]
+		 ],
+		"parameters": [
+		      {
+		        "sin2theta_s" : 0.5,
+			"delta_m2" : 1.0
+		      }
+		    ]
 	},
 
 	"run": {
@@ -27,7 +33,12 @@
 		{"variable": "theFlux"},
 		{"variable": "theSpectrum"},
 		{"variable": "theCrossSection"},
-		{"variable": "theRate"}
+		{"variable": "theRate"},
+		{"variable": "neutrino_energy"},
+		{"variable": "kinetic_energy"},
+		{"variable": "radius"},
+		{"variable": "time"},
+		{"variable": "lp__"}
 		],
 
 	"sample": "./results/test_generator.out"

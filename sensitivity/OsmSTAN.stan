@@ -84,6 +84,9 @@ data {
      real detector_mass;						// in g
      real targetA;							// the target mass number
      real targetZ;						       	// the target atomic number
+     real sourceHalflife;						// the half-life of the radioactive source in days
+     real sin2theta_s;							// the sterile neutrino mixing angle
+     real delta_m2;							// the sterile delat m^2 in eV^2
 
 }
 
@@ -98,11 +101,10 @@ transformed data {
 }
 parameters {
 
-//	real <upper = 1.> sin2theta_s;
-//	real <lower = 0.> delta_m2;
 	real <lower = e_lower_limit, upper = Q> neutrino_energy;
 	real <lower = threshold, upper = t_upper_limit> kinetic_energy;
 	real <lower = min_r, upper = max_r> radius;   
+	real <lower = 0.> time;
 
 }
 
@@ -113,6 +115,7 @@ transformed parameters {
 	 real theCrossSection;
 	 real theOscillation;
 	 real theRate;
+	 real theOscillatedRate;
 
 	 theFlux <- 1. / (4. * pi() * square(radius));
 
@@ -120,18 +123,22 @@ transformed parameters {
 
 	 theCrossSection <- differential_cross_section(neutrino_energy, kinetic_energy, targetMass, targetA, targetZ);
 
-//	 theOscillation <- oscillations(sin2theta_s, delta_m2, neutrino_energy, radius);
+	 theOscillation <- oscillations(sin2theta_s, delta_m2, neutrino_energy, radius);
 
 	 theRate <- target(targetMass, targetA) * theFlux * theSpectrum * theCrossSection;
+
+	 theOscillatedRate <- theRate * theOscillation;
 
 }
 
 model {
 
-        increment_log_prob(log(theRate));
+        increment_log_prob(log(theOscillatedRate));
 
       	neutrino_energy ~ uniform(min_neutrino_energy(threshold, targetMass), Q);
 
         kinetic_energy ~ uniform(threshold, tmax(neutrino_energy, targetMass));
+
+	time ~ exponential(log2()/sourceHalflife);
 
 }
