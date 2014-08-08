@@ -42,7 +42,7 @@ functions{
 // Neutrino Oscillations
 
    real oscillations(real sin2theta_s, real delta_m2, real neutrino_energy, real radius) {
-   	return 1 - square(sin2theta_s) * square(sin(12700 * square(delta_m2) * radius / neutrino_energy));
+   	return 1. - sin2theta_s * square(sin(12700 * delta_m2 * radius / neutrino_energy));
    }
 
 // Beta Nu Spectrum
@@ -89,17 +89,19 @@ data {
 
 transformed data {
 
-	real t_limit;
+	real t_upper_limit;
+	real e_lower_limit;
 
-	t_limit <- Q/(1. + targetMass/(2*Q));
+	t_upper_limit <- Q/(1. + targetMass/(2*Q));
+	e_lower_limit <- threshold/2.*(1.+sqrt(1.+2.*targetMass/threshold));
 
 }
 parameters {
 
-	real <upper = 1.> sin2theta_s;
-	real <lower = 0.> delta_m2;
-	real <lower = 0., upper = Q> neutrino_energy;
-	real <lower = threshold, upper = t_limit> kinetic_energy;
+//	real <upper = 1.> sin2theta_s;
+//	real <lower = 0.> delta_m2;
+	real <lower = e_lower_limit, upper = Q> neutrino_energy;
+	real <lower = threshold, upper = t_upper_limit> kinetic_energy;
 	real <lower = min_r, upper = max_r> radius;   
 
 }
@@ -118,9 +120,9 @@ transformed parameters {
 
 	 theCrossSection <- differential_cross_section(neutrino_energy, kinetic_energy, targetMass, targetA, targetZ);
 
-	 theOscillation <- oscillations(sin2theta_s, delta_m2, neutrino_energy, radius);
+//	 theOscillation <- oscillations(sin2theta_s, delta_m2, neutrino_energy, radius);
 
-	 theRate <- target(targetMass, targetA) * theFlux * theSpectrum * theCrossSection * theOscillation;
+	 theRate <- target(targetMass, targetA) * theFlux * theSpectrum * theCrossSection;
 
 }
 

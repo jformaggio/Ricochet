@@ -24,8 +24,10 @@
 	       "chain": 8},
 
 	"plot": [
-		{"variable": "sin2theta_s"},
-		{"variable": "delta_m2"}
+		{"variable": "theFlux"},
+		{"variable": "theSpectrum"},
+		{"variable": "theCrossSection"},
+		{"variable": "theRate"}
 		],
 
 	"sample": "./results/test_generator.out"
