@@ -42,9 +42,10 @@ theFit = pyL.stan_cache(model_code= theModelFile,
 
 # Print results and make plots
 
-print(theFit)
-
 for key in thePlots:
     theFit.plot(key['variable'])
 
 pyL.plt.show()
+
+print(theFit)
+

@@ -24,7 +24,8 @@
 	       "chain": 8},
 
 	"plot": [
-		{"variable": "sin_2"}
+		{"variable": "sin2theta_s"},
+		{"variable": "delta_m2"}
 		],
 
 	"sample": "./results/test_generator.out"

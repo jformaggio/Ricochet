@@ -1,6 +1,8 @@
 Q <- 2997000
 threshold <- 10
-m_osmium_target <- 1.77198e11
+targetMass <- 1.77198e11
 min_r <- 10
 max_r <- 200
 detector_mass <- 5000
+targetA <- 190.23
+targetZ <- 76.
