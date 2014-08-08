@@ -18,8 +18,8 @@
 		 ],
 		"parameters": [
 		      {
-		        "sin2theta_s" : 0.5,
-			"delta_m2" : 1.0
+		        "sin2theta_s" : 0.0,
+			"delta_m2" : 0.0
 		      }
 		    ]
 	},
